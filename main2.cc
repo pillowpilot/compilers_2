@@ -11,6 +11,32 @@ constexpr auto digits = "0123456789";
 
 string input;
 int inputIndex;
+int tabs;
+
+void ifexpr();
+void bexpr();
+void bexprPrime();
+void bterm();
+void btermPrime();
+void bfactor();
+void bfactorN();
+void bfactorNO();
+void bfactorNOT();
+void value();
+void spc();
+void spcPrime();
+void letter();
+void digit();
+void letterN();
+void letterO();
+void letterT();
+bool isInFirstOfLetter(const char&);
+bool isInFirstOfDigit(const char&);
+bool isInFirstOfLetterN(const char&);
+bool isInFirstOfLetterO(const char&);
+bool isInFirstOfLetterT(const char&);
+void gettingIntoFunction();
+void gettingOutOfFunction();
 
 inline void advancePointer()
 {
@@ -52,49 +78,43 @@ inline char getPointedChar()
 
 inline void printDerivation(const string& s)
 {
+  for(int i = 0; i < tabs; i++)
+    cout << " ";
   cout << s << endl;
 }
 
-void ifexpr();
-void bexpr();
-void bexprPrime();
-void bterm();
-void btermPrime();
-void bfactor();
-void bfactorN();
-void bfactorNO();
-void bfactorNOT();
-void value();
-void spc();
-void spcPrime();
-void letter();
-void digit();
-void letterN();
-void letterO();
-void letterT();
-bool isInFirstOfLetter(const char&);
-bool isInFirstOfDigit(const char&);
-bool isInFirstOfLetterN(const char&);
-bool isInFirstOfLetterO(const char&);
-bool isInFirstOfLetterT(const char&);
+void gettingIntoFunction()
+{
+  tabs++;
+}
+
+void gettingOutOfFunction()
+{
+  tabs--;
+}
 
 void ifexpr()
 {
+  gettingIntoFunction();
   printDerivation("ifexpr => if ( bexpr ) instr");
   match("if (");
   bexpr();
   match(") instr");
+  gettingOutOfFunction();
 }
 
 void bexpr()
 {
+  gettingIntoFunction();
   printDerivation("bexpr => bterm bexprPrime");
   bterm();
   bexprPrime();
+  gettingOutOfFunction();
 }
 
 void bexprPrime()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( 'O' == c )
     {
@@ -108,17 +128,21 @@ void bexprPrime()
     {
       printDerivation("bexprPrime => epsilon");
     }
+  gettingOutOfFunction();
 }
 
 void bterm()
 {
+  gettingIntoFunction();
   printDerivation("bterm => bfactor btermPrime");
   bfactor();
   btermPrime();
+  gettingOutOfFunction();
 }
 
 void btermPrime()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( 'A' == c)
     {
@@ -132,10 +156,12 @@ void btermPrime()
     {
       printDerivation("btermPrime => epsilon");
     }
+  gettingOutOfFunction();
 }
 
 void bfactor()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( '(' == c )
     {
@@ -164,10 +190,12 @@ void bfactor()
       bfactorN();
     }
   else error();
+  gettingOutOfFunction();
 }
 
 void bfactorN()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( isInFirstOfLetterO(c) )
     {
@@ -192,10 +220,12 @@ void bfactorN()
       printDerivation("bfactorN => spc");
       spc();
     }
+  gettingOutOfFunction();
 }
 
 void bfactorNO()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( isInFirstOfLetterT(c) )
     {
@@ -220,10 +250,12 @@ void bfactorNO()
       printDerivation("bfactorNO => spc");
       spc();
     }
+  gettingOutOfFunction();
 }
 
 void bfactorNOT()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( find(alphabet, c) )
     {
@@ -243,10 +275,12 @@ void bfactorNOT()
       spc();
       bfactor();
     }
+  gettingOutOfFunction();
 }
 
 void value()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( isInFirstOfLetter(c) )
     {
@@ -265,17 +299,21 @@ void value()
       printDerivation("value => spcPrime");
       spcPrime();
     }
+  gettingOutOfFunction();
 }
 
 void spc()
 {
+  gettingIntoFunction();
   printDerivation("spc => <space> spcPrime");
   match(" ");
   spcPrime();
+  gettingOutOfFunction();
 }
 
 void spcPrime()
 {
+  gettingIntoFunction();
   if( ' ' == getPointedChar() )
     {
       printDerivation("spcPrime => <space> spcPrime");
@@ -286,21 +324,25 @@ void spcPrime()
     {
       printDerivation("spcPrime => epsilon");
     }
+  gettingOutOfFunction();
 }
 
 void letter()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( find(alphabet, c ) != std::string::npos )
     {
       printDerivation("letter => " + string(1, c));
       match(c);
     }
-  else error();    
+  else error();
+  gettingOutOfFunction();
 }
 
 void digit()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( find(digits, c) != std::string::npos )
     {
@@ -308,10 +350,12 @@ void digit()
       match(c);
     }
   else error();
+  gettingOutOfFunction();
 }
 
 void letterN()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( 'N' == c ) error();
   else if( find(alphabet, c) )
@@ -320,10 +364,12 @@ void letterN()
       match(c);
     }
   else error();
+  gettingOutOfFunction();
 }
 
 void letterO()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( 'O' == c ) error();
   else if( find(alphabet, c) )
@@ -332,10 +378,12 @@ void letterO()
       match(c);
     }
   else error();
+  gettingOutOfFunction();
 }
 
 void letterT()
 {
+  gettingIntoFunction();
   const auto& c = getPointedChar();
   if( 'T' == c ) error();
   else if( find(alphabet, c) )
@@ -344,6 +392,7 @@ void letterT()
       match(c);
     }
   else error();
+  gettingOutOfFunction();
 }
 
 bool isInFirstOfLetter(const char& c)
@@ -376,6 +425,7 @@ bool isInFirstOfLetterT(const char& c)
 
 int main(int argc, char* argv[])
 {
+  tabs = 0;
   inputIndex = 0;
   std::getline(std::cin, input);
 
