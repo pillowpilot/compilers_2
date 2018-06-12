@@ -11,7 +11,7 @@ constexpr auto digits = "0123456789";
 
 string input;
 int inputIndex;
-int tabs;
+string tabulation;
 
 void ifexpr();
 void bexpr();
@@ -78,29 +78,29 @@ inline char getPointedChar()
 
 inline void printDerivation(const string& s)
 {
-  for(int i = 0; i < tabs; i++)
-    cout << " ";
-  cout << s << endl;
+  cout << tabulation << "-- " << s << endl;
 }
 
 void gettingIntoFunction()
 {
-  tabs++;
+  for(const auto& c: "   |")
+    tabulation.push_back(c);
 }
 
 void gettingOutOfFunction()
 {
-  tabs--;
+  for(int i = 0; i < 5; i++)
+    tabulation.pop_back();
 }
 
 void ifexpr()
 {
-  gettingIntoFunction();
+  //gettingIntoFunction();
   printDerivation("ifexpr => if ( bexpr ) instr");
   match("if (");
   bexpr();
   match(") instr");
-  gettingOutOfFunction();
+  //gettingOutOfFunction();
 }
 
 void bexpr()
@@ -425,7 +425,7 @@ bool isInFirstOfLetterT(const char& c)
 
 int main(int argc, char* argv[])
 {
-  tabs = 0;
+  tabulation = "";
   inputIndex = 0;
   std::getline(std::cin, input);
 
